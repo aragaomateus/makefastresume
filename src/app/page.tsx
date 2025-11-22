@@ -1,324 +1,356 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { PDFDownloadLink } from '@react-pdf/renderer';
-import { ChevronRight, CheckCircle, FileText, Briefcase, Wand2, Download } from 'lucide-react';
-import ResumeTextInput from '@/components/ResumeTextInput';
-import JobUrlInput from '@/components/JobUrlInput';
-import ResumePDF from '@/components/ResumePDF';
-import { ResumeStorage } from '@/lib/storage';
-import type { Resume, TailoredResume } from '@/types/resume';
-import type { JobData } from '@/types/job';
+import Link from 'next/link';
+import Image from 'next/image';
+import { ArrowRight, Zap, Target, CheckCircle, Sparkles, FileText, Clock } from 'lucide-react';
 
-type Step = 'upload' | 'job' | 'tailor' | 'download';
-
-export default function Home() {
-  const [currentStep, setCurrentStep] = useState<Step>('upload');
-  const [resume, setResume] = useState<Resume | null>(null);
-  const [jobData, setJobData] = useState<JobData | null>(null);
-  const [tailoredResume, setTailoredResume] = useState<TailoredResume | null>(null);
-  const [tailoring, setTailoring] = useState(false);
-  const [explanation, setExplanation] = useState('');
-  const [tokenUsage, setTokenUsage] = useState<any>(null);
-
-  // Load existing resume on mount
-  useEffect(() => {
-    const existingResume = ResumeStorage.getResume();
-    if (existingResume) {
-      setResume(existingResume);
-    }
-  }, []);
-
-  const handleResumeUploaded = (uploadedResume: Resume) => {
-    setResume(uploadedResume);
-    ResumeStorage.saveResume(uploadedResume);
-    setTimeout(() => setCurrentStep('job'), 1000);
+export default function LandingPage() {
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "MakeFastResume",
+    "url": "https://makefastresume.com",
+    "description": "AI-powered resume tailoring service that helps job seekers get 3x more interviews by optimizing resumes for each job application",
+    "applicationCategory": "BusinessApplication",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "featureList": [
+      "AI-powered resume optimization",
+      "ATS keyword optimization",
+      "Automated job description analysis",
+      "PDF resume generation",
+      "Unlimited resume tailoring"
+    ],
+    "browserRequirements": "Requires JavaScript. Requires HTML5.",
+    "softwareVersion": "1.0",
+    "operatingSystem": "Any"
   };
 
-  const handleJobFetched = (job: JobData) => {
-    setJobData(job);
-    setCurrentStep('tailor');
+  const organizationData = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "MakeFastResume",
+    "url": "https://makefastresume.com",
+    "logo": "https://makefastresume.com/logo.svg",
+    "description": "AI-powered resume tailoring service",
+    "sameAs": [
+      "https://twitter.com/makefastresume"
+    ]
   };
-
-  const handleTailorResume = async () => {
-    if (!resume || !jobData) return;
-
-    setTailoring(true);
-
-    try {
-      const response = await fetch('/api/tailor-resume', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          resume,
-          jobDescription: jobData.content,
-          jobTitle: jobData.title,
-          jobUrl: jobData.url,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to tailor resume');
-      }
-
-      const { tailoredResume: tailored, explanation: exp, usage } = await response.json();
-
-      setTailoredResume(tailored);
-      setExplanation(exp);
-      setTokenUsage(usage);
-      ResumeStorage.saveTailoredResume(tailored);
-      setCurrentStep('download');
-    } catch (error) {
-      console.error('Tailoring error:', error);
-      alert('Failed to tailor resume. Please try again.');
-    } finally {
-      setTailoring(false);
-    }
-  };
-
-  const steps = [
-    { id: 'upload', label: 'Upload Resume', icon: FileText },
-    { id: 'job', label: 'Job Details', icon: Briefcase },
-    { id: 'tailor', label: 'Tailor Resume', icon: Wand2 },
-    { id: 'download', label: 'Download', icon: Download },
-  ];
-
-  const currentStepIndex = steps.findIndex((s) => s.id === currentStep);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b">
-        <div className="max-w-5xl mx-auto px-4 sm:px-8 py-6">
-          <h1 className="text-3xl font-bold text-gray-900">MakeFastResume</h1>
-          <p className="text-gray-600 mt-1">Tailor your resume for any job in minutes</p>
-        </div>
-      </header>
-
-      <div className="max-w-5xl mx-auto px-4 sm:px-8 py-8">
-        {/* Progress Steps */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between">
-            {steps.map((step, index) => {
-              const Icon = step.icon;
-              const isCompleted = index < currentStepIndex;
-              const isCurrent = index === currentStepIndex;
-
-              return (
-                <div key={step.id} className="flex items-center flex-1">
-                  <div className="flex flex-col items-center flex-1">
-                    <div
-                      className={`
-                        w-12 h-12 rounded-full flex items-center justify-center transition-colors
-                        ${isCompleted ? 'bg-green-600' : isCurrent ? 'bg-blue-600' : 'bg-gray-300'}
-                      `}
-                    >
-                      {isCompleted ? (
-                        <CheckCircle className="w-6 h-6 text-white" />
-                      ) : (
-                        <Icon className={`w-6 h-6 ${isCurrent ? 'text-white' : 'text-gray-500'}`} />
-                      )}
-                    </div>
-                    <span
-                      className={`mt-2 text-sm font-medium ${
-                        isCurrent ? 'text-blue-600' : isCompleted ? 'text-green-600' : 'text-gray-500'
-                      }`}
-                    >
-                      {step.label}
-                    </span>
-                  </div>
-                  {index < steps.length - 1 && (
-                    <ChevronRight className="w-5 h-5 text-gray-400 -mx-2" />
-                  )}
-                </div>
-              );
-            })}
+    <div className="min-h-screen bg-white">
+      {/* Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationData) }}
+      />
+      {/* Navigation */}
+      <nav className="border-b bg-white sticky top-0 z-50 shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <Link href="/" className="flex items-center gap-2 text-2xl font-bold text-blue-600 hover:text-blue-700 transition-colors">
+              <Image src="/icon.svg" alt="MakeFastResume Logo" width={32} height={32} className="w-8 h-8" />
+              MakeFastResume
+            </Link>
+            <div className="flex gap-6 items-center">
+              <Link href="/blog" className="text-gray-600 hover:text-gray-900 font-medium transition-colors">
+                Blog
+              </Link>
+              <Link
+                href="/tailor"
+                className="px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all font-semibold shadow-sm hover:shadow-md"
+              >
+                Get Started Free
+              </Link>
+            </div>
           </div>
         </div>
+      </nav>
 
-        {/* Main Content */}
-        <div className="bg-white rounded-2xl shadow-xl p-8">
-          {currentStep === 'upload' && (
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Enter Your Resume</h2>
-              <p className="text-gray-600 mb-6">
-                Paste the text of your current resume. We'll parse it with AI and use it as the foundation for tailored versions.
+      {/* Hero Section */}
+      <section className="pt-24 pb-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+        <div className="max-w-6xl mx-auto text-center">
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-gray-900 mb-6 leading-tight">
+            Get 3x More Interviews with
+            <span className="text-blue-600 block mt-2"> AI-Tailored Resumes</span>
+          </h1>
+          <p className="text-xl md:text-2xl text-gray-600 mb-10 max-w-3xl mx-auto leading-relaxed">
+            Stop sending the same resume to every job. Our AI optimizes your resume for each position in minutes,
+            helping you beat ATS systems and land more interviews.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <Link
+              href="/tailor"
+              className="px-10 py-4 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-all font-bold text-lg flex items-center gap-2 shadow-lg hover:shadow-xl hover:scale-105"
+            >
+              Start Tailoring Now
+              <ArrowRight className="w-5 h-5" />
+            </Link>
+            <Link
+              href="/blog/why-tailored-resumes-work"
+              className="px-10 py-4 bg-white border-2 border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 hover:border-gray-400 transition-all font-semibold text-lg shadow-md"
+            >
+              See How It Works
+            </Link>
+          </div>
+          <p className="mt-8 text-base text-gray-600 font-medium">
+            ✓ Free to use  ✓ No credit card required  ✓ Results in minutes
+          </p>
+        </div>
+      </section>
+
+      {/* Problem Section */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Are You Making These Resume Mistakes?
+            </h2>
+            <p className="text-lg text-gray-600">
+              Most job seekers lose opportunities before a human ever sees their resume
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="p-6 border-2 border-red-200 rounded-lg bg-red-50">
+              <div className="text-4xl mb-4">❌</div>
+              <h3 className="font-semibold text-lg mb-2">Generic Resume</h3>
+              <p className="text-gray-600 text-sm">
+                Sending the same resume to every job means you're missing 70% of ATS keywords and failing to match job requirements.
               </p>
-              <ResumeTextInput
-                onResumeUploaded={handleResumeUploaded}
-                onClearResume={() => setResume(null)}
-                existingResume={resume}
-              />
             </div>
-          )}
 
-          {currentStep === 'job' && (
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Enter Job Details</h2>
-              <p className="text-gray-600 mb-6">
-                Paste the URL of the job posting you want to apply for. We'll extract the job description automatically.
+            <div className="p-6 border-2 border-red-200 rounded-lg bg-red-50">
+              <div className="text-4xl mb-4">❌</div>
+              <h3 className="font-semibold text-lg mb-2">ATS Rejection</h3>
+              <p className="text-gray-600 text-sm">
+                75% of resumes never reach a human recruiter because Applicant Tracking Systems filter them out for missing keywords.
               </p>
-              <JobUrlInput
-                onJobFetched={handleJobFetched}
-                existingJobData={jobData}
-                onClearJob={() => setJobData(null)}
-              />
-
-              {!jobData && (
-                <div className="mt-6">
-                  <button
-                    onClick={() => setCurrentStep('upload')}
-                    className="w-full py-3 bg-white border-2 border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
-                  >
-                    Back to Resume Upload
-                  </button>
-                </div>
-              )}
             </div>
-          )}
 
-          {currentStep === 'tailor' && jobData && (
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Review & Tailor</h2>
-              <p className="text-gray-600 mb-6">
-                Review the job details and click "Tailor Resume" to optimize your resume for this position.
+            <div className="p-6 border-2 border-red-200 rounded-lg bg-red-50">
+              <div className="text-4xl mb-4">❌</div>
+              <h3 className="font-semibold text-lg mb-2">Hours Wasted</h3>
+              <p className="text-gray-600 text-sm">
+                Manually customizing resumes takes 2-3 hours per application, limiting how many jobs you can apply to effectively.
               </p>
+            </div>
+          </div>
+        </div>
+      </section>
 
-              <div className="bg-gray-50 rounded-lg p-6 mb-6">
-                <h3 className="font-semibold text-lg text-gray-900 mb-2">{jobData.title}</h3>
-                <a
-                  href={jobData.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm text-blue-600 hover:underline mb-4 block"
-                >
-                  {jobData.url}
-                </a>
-                <div className="max-h-96 overflow-y-auto border border-gray-200 rounded p-4 bg-white">
-                  <p className="text-sm text-gray-700 whitespace-pre-wrap">{jobData.content}</p>
-                </div>
-                <p className="text-xs text-gray-500 mt-2">
-                  {jobData.content.length} characters • Scroll to read full description
+      {/* How It Works */}
+      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gray-50">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              Tailor Your Resume in 3 Simple Steps
+            </h2>
+            <p className="text-xl text-gray-600">
+              Our AI does the heavy lifting while you focus on landing interviews
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="bg-white p-10 rounded-2xl shadow-md hover:shadow-xl transition-shadow border border-gray-100">
+              <div className="w-16 h-16 bg-blue-100 rounded-xl flex items-center justify-center mb-6">
+                <FileText className="w-8 h-8 text-blue-600" />
+              </div>
+              <div className="text-blue-600 font-bold mb-3 text-sm uppercase tracking-wide">Step 1</div>
+              <h3 className="font-bold text-2xl mb-4 text-gray-900">Paste Your Resume</h3>
+              <p className="text-gray-600 leading-relaxed">
+                Copy and paste your current resume. Our AI parses it and extracts all your experience, skills, and achievements.
+              </p>
+            </div>
+
+            <div className="bg-white p-10 rounded-2xl shadow-md hover:shadow-xl transition-shadow border border-gray-100">
+              <div className="w-16 h-16 bg-blue-100 rounded-xl flex items-center justify-center mb-6">
+                <Target className="w-8 h-8 text-blue-600" />
+              </div>
+              <div className="text-blue-600 font-bold mb-3 text-sm uppercase tracking-wide">Step 2</div>
+              <h3 className="font-bold text-2xl mb-4 text-gray-900">Add Job URL</h3>
+              <p className="text-gray-600 leading-relaxed">
+                Paste the job posting URL. We automatically extract requirements, keywords, and what the employer is looking for.
+              </p>
+            </div>
+
+            <div className="bg-white p-10 rounded-2xl shadow-md hover:shadow-xl transition-shadow border border-gray-100">
+              <div className="w-16 h-16 bg-blue-100 rounded-xl flex items-center justify-center mb-6">
+                <Sparkles className="w-8 h-8 text-blue-600" />
+              </div>
+              <div className="text-blue-600 font-bold mb-3 text-sm uppercase tracking-wide">Step 3</div>
+              <h3 className="font-bold text-2xl mb-4 text-gray-900">Download & Apply</h3>
+              <p className="text-gray-600 leading-relaxed">
+                Get your optimized resume in seconds. Download the PDF and apply with confidence, knowing it's perfectly tailored.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Features */}
+      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              Powered by Advanced AI
+            </h2>
+            <p className="text-xl text-gray-600">
+              Claude Sonnet 4 ensures your resume stands out for all the right reasons
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="flex gap-5 p-7 border-2 border-gray-200 rounded-xl hover:border-blue-400 hover:shadow-lg transition-all bg-white">
+              <CheckCircle className="w-7 h-7 text-green-600 flex-shrink-0 mt-1" />
+              <div>
+                <h3 className="font-bold text-xl mb-3 text-gray-900">ATS-Optimized Keywords</h3>
+                <p className="text-gray-600 leading-relaxed">
+                  Automatically identifies and incorporates relevant keywords from job descriptions to pass Applicant Tracking Systems.
                 </p>
               </div>
+            </div>
 
-              <div className="space-y-3">
-                <button
-                  onClick={handleTailorResume}
-                  disabled={tailoring}
-                  className="w-full py-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 transition-colors font-semibold text-lg flex items-center justify-center gap-2"
-                >
-                  {tailoring ? (
-                    <>
-                      <Wand2 className="w-5 h-5 animate-pulse" />
-                      Tailoring Resume...
-                    </>
-                  ) : (
-                    <>
-                      <Wand2 className="w-5 h-5" />
-                      Tailor Resume with AI
-                    </>
-                  )}
-                </button>
-
-                <button
-                  onClick={() => {
-                    setCurrentStep('job');
-                    setJobData(null);
-                  }}
-                  disabled={tailoring}
-                  className="w-full py-3 bg-white border-2 border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
-                >
-                  Back to Job Details
-                </button>
+            <div className="flex gap-5 p-7 border-2 border-gray-200 rounded-xl hover:border-blue-400 hover:shadow-lg transition-all bg-white">
+              <CheckCircle className="w-7 h-7 text-green-600 flex-shrink-0 mt-1" />
+              <div>
+                <h3 className="font-bold text-xl mb-3 text-gray-900">Smart Experience Reframing</h3>
+                <p className="text-gray-600 leading-relaxed">
+                  Rewrites your bullet points to emphasize the most relevant skills and achievements for each specific role.
+                </p>
               </div>
             </div>
-          )}
 
-          {currentStep === 'download' && tailoredResume && (
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Your Tailored Resume is Ready!</h2>
-              <p className="text-gray-600 mb-6">
-                We've optimized your resume for this position. Download it below and review the changes.
-              </p>
-
-              {explanation && (
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-                  <p className="text-sm text-blue-900">
-                    <strong>Changes Made:</strong> {explanation}
-                  </p>
-                </div>
-              )}
-
-              {tokenUsage && (
-                <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-6">
-                  <h3 className="text-sm font-semibold text-gray-900 mb-2">API Usage</h3>
-                  <div className="grid grid-cols-2 gap-3 text-xs text-gray-700">
-                    <div>
-                      <span className="font-medium">Input Tokens:</span> {tokenUsage.inputTokens.toLocaleString()}
-                    </div>
-                    <div>
-                      <span className="font-medium">Output Tokens:</span> {tokenUsage.outputTokens.toLocaleString()}
-                    </div>
-                    <div>
-                      <span className="font-medium">Total Tokens:</span> {tokenUsage.totalTokens.toLocaleString()}
-                    </div>
-                    <div>
-                      <span className="font-medium">Estimated Cost:</span> ${tokenUsage.estimatedCost}
-                    </div>
-                  </div>
-                  <p className="text-xs text-gray-500 mt-2">
-                    (Input: ${tokenUsage.costBreakdown.input} • Output: ${tokenUsage.costBreakdown.output})
-                  </p>
-                </div>
-              )}
-
-              <div className="space-y-4">
-                <PDFDownloadLink
-                  document={<ResumePDF resume={tailoredResume} />}
-                  fileName={(() => {
-                    const name = tailoredResume.name.replace(/\s+/g, '_');
-                    // Use company from jobData if available, otherwise extract from URL
-                    const company = jobData?.company
-                      ? jobData.company.replace(/\s+/g, '').replace(/[^a-zA-Z0-9]/g, '')
-                      : 'Company';
-                    const position = tailoredResume.jobTitle
-                      .replace(/\s+/g, '_')
-                      .replace(/[^a-zA-Z0-9_-]/g, '');
-                    return `${name}_resume_${company}_${position}.pdf`;
-                  })()}
-                  className="block w-full py-4 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-semibold text-lg text-center"
-                >
-                  {({ loading }) => (loading ? 'Generating PDF...' : 'Download Tailored Resume')}
-                </PDFDownloadLink>
-
-                <button
-                  onClick={() => {
-                    setCurrentStep('job');
-                    setJobData(null);
-                    setTailoredResume(null);
-                  }}
-                  className="block w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
-                >
-                  Tailor for Another Job
-                </button>
-
-                <button
-                  onClick={() => {
-                    setCurrentStep('upload');
-                    setResume(null);
-                    setJobData(null);
-                    setTailoredResume(null);
-                  }}
-                  className="block w-full py-3 bg-white border-2 border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
-                >
-                  Start Over with New Resume
-                </button>
+            <div className="flex gap-5 p-7 border-2 border-gray-200 rounded-xl hover:border-blue-400 hover:shadow-lg transition-all bg-white">
+              <CheckCircle className="w-7 h-7 text-green-600 flex-shrink-0 mt-1" />
+              <div>
+                <h3 className="font-bold text-xl mb-3 text-gray-900">Maintains Authenticity</h3>
+                <p className="text-gray-600 leading-relaxed">
+                  Never fabricates experience. Only highlights and reframes what you've actually accomplished in your career.
+                </p>
               </div>
             </div>
-          )}
+
+            <div className="flex gap-5 p-7 border-2 border-gray-200 rounded-xl hover:border-blue-400 hover:shadow-lg transition-all bg-white">
+              <CheckCircle className="w-7 h-7 text-green-600 flex-shrink-0 mt-1" />
+              <div>
+                <h3 className="font-bold text-xl mb-3 text-gray-900">Professional Formatting</h3>
+                <p className="text-gray-600 leading-relaxed">
+                  Generates clean, ATS-friendly PDFs that look great both in automated systems and to human recruiters.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex gap-5 p-7 border-2 border-gray-200 rounded-xl hover:border-blue-400 hover:shadow-lg transition-all bg-white">
+              <Clock className="w-7 h-7 text-blue-600 flex-shrink-0 mt-1" />
+              <div>
+                <h3 className="font-bold text-xl mb-3 text-gray-900">Minutes, Not Hours</h3>
+                <p className="text-gray-600 leading-relaxed">
+                  What used to take 2-3 hours of manual work now happens in under 5 minutes with better results.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex gap-5 p-7 border-2 border-gray-200 rounded-xl hover:border-blue-400 hover:shadow-lg transition-all bg-white">
+              <Zap className="w-7 h-7 text-yellow-600 flex-shrink-0 mt-1" />
+              <div>
+                <h3 className="font-bold text-xl mb-3 text-gray-900">Unlimited Tailoring</h3>
+                <p className="text-gray-600 leading-relaxed">
+                  Create as many tailored versions as you need. Apply to 10, 20, or 100 jobs with optimized resumes for each.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
+
+      {/* Social Proof */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 to-indigo-100">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-12">
+            Join Thousands of Successful Job Seekers
+          </h2>
+
+          <div className="grid md:grid-cols-3 gap-8 mb-12">
+            <div className="bg-white p-6 rounded-lg shadow-sm">
+              <div className="text-4xl font-bold text-blue-600 mb-2">3x</div>
+              <p className="text-gray-600">More interview callbacks</p>
+            </div>
+            <div className="bg-white p-6 rounded-lg shadow-sm">
+              <div className="text-4xl font-bold text-blue-600 mb-2">75%</div>
+              <p className="text-gray-600">Pass ATS systems</p>
+            </div>
+            <div className="bg-white p-6 rounded-lg shadow-sm">
+              <div className="text-4xl font-bold text-blue-600 mb-2">5min</div>
+              <p className="text-gray-600">Average tailoring time</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-900 text-white">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6">
+            Ready to Land Your Dream Job?
+          </h2>
+          <p className="text-xl text-gray-300 mb-8">
+            Start tailoring your resume for free. No credit card required.
+          </p>
+          <Link
+            href="/tailor"
+            className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold text-lg"
+          >
+            Get Started Now
+            <ArrowRight className="w-5 h-5" />
+          </Link>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-gray-900 text-gray-400 py-12 px-4 sm:px-6 lg:px-8 border-t border-gray-800">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-4 gap-8">
+            <div>
+              <h3 className="text-white font-bold mb-4">MakeFastResume</h3>
+              <p className="text-sm">AI-powered resume tailoring for modern job seekers.</p>
+            </div>
+            <div>
+              <h4 className="text-white font-semibold mb-3">Resources</h4>
+              <ul className="space-y-2 text-sm">
+                <li><Link href="/blog/why-tailored-resumes-work" className="hover:text-white">Why Tailored Resumes Work</Link></li>
+                <li><Link href="/blog/beat-ats-systems" className="hover:text-white">Beat ATS Systems</Link></li>
+                <li><Link href="/blog/resume-optimization-guide" className="hover:text-white">Optimization Guide</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="text-white font-semibold mb-3">Product</h4>
+              <ul className="space-y-2 text-sm">
+                <li><Link href="/tailor" className="hover:text-white">Resume Tailor</Link></li>
+                <li><Link href="/blog" className="hover:text-white">Blog</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="text-white font-semibold mb-3">Legal</h4>
+              <ul className="space-y-2 text-sm">
+                <li><a href="#" className="hover:text-white">Privacy Policy</a></li>
+                <li><a href="#" className="hover:text-white">Terms of Service</a></li>
+              </ul>
+            </div>
+          </div>
+          <div className="mt-8 pt-8 border-t border-gray-800 text-sm text-center">
+            © 2025 MakeFastResume. All rights reserved.
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
