@@ -272,7 +272,7 @@ export default function JobUrlInput({ onJobFetched, existingJobData, onClearJob,
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             placeholder="https://job-boards.greenhouse.io/company/jobs/..."
-            className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+            className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-gray-700 placeholder-gray-400"
             onKeyDown={(e) => e.key === 'Enter' && fetchJob()}
           />
           <button
@@ -354,7 +354,7 @@ export default function JobUrlInput({ onJobFetched, existingJobData, onClearJob,
               value={manualCompany}
               onChange={(e) => setManualCompany(e.target.value)}
               placeholder="e.g., NBCUniversal"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-gray-700 placeholder-gray-400"
             />
           </div>
 
@@ -367,7 +367,7 @@ export default function JobUrlInput({ onJobFetched, existingJobData, onClearJob,
               value={manualTitle}
               onChange={(e) => setManualTitle(e.target.value)}
               placeholder="e.g., Senior Software Engineer"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-gray-700 placeholder-gray-400"
             />
           </div>
 
@@ -379,7 +379,7 @@ export default function JobUrlInput({ onJobFetched, existingJobData, onClearJob,
               value={manualDescription}
               onChange={(e) => setManualDescription(e.target.value)}
               placeholder="Paste the full job description here..."
-              className="w-full h-64 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none font-mono text-sm resize-none"
+              className="w-full h-64 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none font-mono text-sm resize-none text-gray-700 placeholder-gray-400"
             />
           </div>
 

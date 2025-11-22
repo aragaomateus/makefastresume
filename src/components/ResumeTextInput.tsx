@@ -106,7 +106,7 @@ Graduated: May 2019
 
 SKILLS
 JavaScript, React, Node.js, Python..."
-          className="w-full h-96 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none font-mono text-sm resize-none"
+          className="w-full h-96 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none font-mono text-sm resize-none text-gray-700 placeholder-gray-400"
         />
 
         <div className="mt-4 flex justify-end">
