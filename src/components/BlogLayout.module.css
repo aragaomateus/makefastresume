@@ -1,0 +1,93 @@
+.blogContent {
+  color: #000000;
+  line-height: 1.6;
+}
+
+.blogContent p {
+  color: #000000;
+  font-size: 17px;
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+}
+
+.blogContent h2 {
+  color: #000000;
+  font-size: 1.875rem;
+  font-weight: 700;
+  margin-top: 3rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.3;
+}
+
+.blogContent h3 {
+  color: #000000;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  line-height: 1.4;
+}
+
+.blogContent h4 {
+  color: #000000;
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.4;
+}
+
+.blogContent ul,
+.blogContent ol {
+  margin: 1.5rem 0;
+  padding-left: 1.5rem;
+  color: #000000;
+}
+
+.blogContent li {
+  color: #000000;
+  font-size: 17px;
+  line-height: 1.8;
+  margin-bottom: 0.5rem;
+}
+
+.blogContent strong {
+  color: #000000;
+  font-weight: 700;
+}
+
+.blogContent em {
+  color: #000000;
+  font-style: italic;
+}
+
+.blogContent a {
+  color: #2563eb;
+  text-decoration: underline;
+  text-decoration-color: #93c5fd;
+  text-underline-offset: 2px;
+}
+
+.blogContent a:hover {
+  color: #1d4ed8;
+  text-decoration-color: #2563eb;
+}
+
+.blogContent code {
+  color: #1d4ed8;
+  background-color: #eff6ff;
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+  font-family: monospace;
+  font-size: 0.875rem;
+}
+
+.blogContent blockquote {
+  border-left: 4px solid #3b82f6;
+  background-color: #eff6ff;
+  padding: 1rem 1.5rem;
+  margin: 1.5rem 0;
+  border-radius: 0 0.5rem 0.5rem 0;
+  font-style: italic;
+  color: #000000;
+}

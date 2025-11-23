@@ -122,24 +122,24 @@ export default function LandingPage() {
           <div className="grid md:grid-cols-3 gap-8">
             <div className="p-6 border-2 border-red-200 rounded-lg bg-red-50">
               <div className="text-4xl mb-4">❌</div>
-              <h3 className="font-semibold text-lg mb-2">Generic Resume</h3>
-              <p className="text-gray-600 text-sm">
+              <h3 className="font-bold text-lg mb-2 text-gray-900">Generic Resume</h3>
+              <p className="text-gray-700 text-sm leading-relaxed">
                 Sending the same resume to every job means you're missing 70% of ATS keywords and failing to match job requirements.
               </p>
             </div>
 
             <div className="p-6 border-2 border-red-200 rounded-lg bg-red-50">
               <div className="text-4xl mb-4">❌</div>
-              <h3 className="font-semibold text-lg mb-2">ATS Rejection</h3>
-              <p className="text-gray-600 text-sm">
+              <h3 className="font-bold text-lg mb-2 text-gray-900">ATS Rejection</h3>
+              <p className="text-gray-700 text-sm leading-relaxed">
                 75% of resumes never reach a human recruiter because Applicant Tracking Systems filter them out for missing keywords.
               </p>
             </div>
 
             <div className="p-6 border-2 border-red-200 rounded-lg bg-red-50">
               <div className="text-4xl mb-4">❌</div>
-              <h3 className="font-semibold text-lg mb-2">Hours Wasted</h3>
-              <p className="text-gray-600 text-sm">
+              <h3 className="font-bold text-lg mb-2 text-gray-900">Hours Wasted</h3>
+              <p className="text-gray-700 text-sm leading-relaxed">
                 Manually customizing resumes takes 2-3 hours per application, limiting how many jobs you can apply to effectively.
               </p>
             </div>
