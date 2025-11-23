@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { PDFDownloadLink } from '@react-pdf/renderer';
-import { ChevronRight, CheckCircle, FileText, Briefcase, Wand2, Download, Home as HomeIcon } from 'lucide-react';
+import { ChevronRight, CheckCircle, FileText, Briefcase, Wand2, Download, Home as HomeIcon, ArrowRight } from 'lucide-react';
 import ResumeTextInput from '@/components/ResumeTextInput';
 import JobUrlInput from '@/components/JobUrlInput';
 import ResumePDF from '@/components/ResumePDF';
@@ -90,7 +90,7 @@ export default function TailorPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Navigation Header */}
-      <nav className="bg-white border-b sticky top-0 z-50 shadow-sm">
+      <nav className="bg-white sticky top-0 z-50 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <Link href="/" className="flex items-center gap-2 text-2xl font-bold text-blue-600 hover:text-blue-700 transition-colors">
@@ -191,6 +191,18 @@ export default function TailorPage() {
                 onClearResume={() => setResume(null)}
                 existingResume={resume}
               />
+
+              {resume && (
+                <div className="mt-6">
+                  <button
+                    onClick={() => setCurrentStep('job')}
+                    className="w-full py-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold text-lg flex items-center justify-center gap-2 shadow-md"
+                  >
+                    Next: Add Job Details
+                    <ArrowRight className="w-5 h-5" />
+                  </button>
+                </div>
+              )}
             </div>
           )}
 

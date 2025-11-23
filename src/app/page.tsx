@@ -3,6 +3,9 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight, Zap, Target, CheckCircle, Sparkles, FileText, Clock } from 'lucide-react';
+import ResumeTransformationPreview from '@/components/ResumeTransformationPreview';
+import ProductMockups from '@/components/ProductMockups';
+import InlineResumeUpload from '@/components/InlineResumeUpload';
 
 export default function LandingPage() {
   const structuredData = {
@@ -53,7 +56,7 @@ export default function LandingPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationData) }}
       />
       {/* Navigation */}
-      <nav className="border-b bg-white sticky top-0 z-50 shadow-sm">
+      <nav className="bg-white sticky top-0 z-50 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <Link href="/" className="flex items-center gap-2 text-2xl font-bold text-blue-600 hover:text-blue-700 transition-colors">
@@ -79,76 +82,35 @@ export default function LandingPage() {
       <section className="pt-24 pb-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
         <div className="max-w-6xl mx-auto text-center">
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-gray-900 mb-6 leading-tight">
-            Get 3x More Interviews with
-            <span className="text-blue-600 block mt-2"> AI-Tailored Resumes</span>
+            <span className="text-blue-600">Tailor Your Resume</span> for Every Job in 3 Minutes
           </h1>
           <p className="text-xl md:text-2xl text-gray-600 mb-10 max-w-3xl mx-auto leading-relaxed">
-            Stop sending the same resume to every job. Our AI optimizes your resume for each position in minutes,
-            helping you beat ATS systems and land more interviews.
+            Paste your resume and job URL. Our AI optimizes it for ATS systems and hiring managers. Download instantly.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link
-              href="/tailor"
-              className="px-10 py-4 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-all font-bold text-lg flex items-center gap-2 shadow-lg hover:shadow-xl hover:scale-105"
-            >
-              Start Tailoring Now
-              <ArrowRight className="w-5 h-5" />
-            </Link>
+
+          {/* Resume Transformation Preview */}
+          <div className="mb-12">
+            <ResumeTransformationPreview />
+          </div>
+
+          {/* Inline Resume Upload */}
+          <div className="max-w-3xl mx-auto mb-8">
+            <InlineResumeUpload />
+          </div>
+
+          <div className="flex justify-center items-center gap-4 mb-6">
             <Link
               href="/blog/why-tailored-resumes-work"
-              className="px-10 py-4 bg-white border-2 border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 hover:border-gray-400 transition-all font-semibold text-lg shadow-md"
+              className="text-blue-600 hover:text-blue-700 font-semibold underline transition-colors"
             >
-              See How It Works
+              See How It Works →
             </Link>
-          </div>
-          <p className="mt-8 text-base text-gray-600 font-medium">
-            ✓ Free to use  ✓ No credit card required  ✓ Results in minutes
-          </p>
-        </div>
-      </section>
-
-      {/* Problem Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Are You Making These Resume Mistakes?
-            </h2>
-            <p className="text-lg text-gray-600">
-              Most job seekers lose opportunities before a human ever sees their resume
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="p-6 border-2 border-red-200 rounded-lg bg-red-50">
-              <div className="text-4xl mb-4">❌</div>
-              <h3 className="font-bold text-lg mb-2 text-gray-900">Generic Resume</h3>
-              <p className="text-gray-700 text-sm leading-relaxed">
-                Sending the same resume to every job means you're missing 70% of ATS keywords and failing to match job requirements.
-              </p>
-            </div>
-
-            <div className="p-6 border-2 border-red-200 rounded-lg bg-red-50">
-              <div className="text-4xl mb-4">❌</div>
-              <h3 className="font-bold text-lg mb-2 text-gray-900">ATS Rejection</h3>
-              <p className="text-gray-700 text-sm leading-relaxed">
-                75% of resumes never reach a human recruiter because Applicant Tracking Systems filter them out for missing keywords.
-              </p>
-            </div>
-
-            <div className="p-6 border-2 border-red-200 rounded-lg bg-red-50">
-              <div className="text-4xl mb-4">❌</div>
-              <h3 className="font-bold text-lg mb-2 text-gray-900">Hours Wasted</h3>
-              <p className="text-gray-700 text-sm leading-relaxed">
-                Manually customizing resumes takes 2-3 hours per application, limiting how many jobs you can apply to effectively.
-              </p>
-            </div>
           </div>
         </div>
       </section>
 
       {/* How It Works */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gray-50">
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
@@ -159,138 +121,66 @@ export default function LandingPage() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-white p-10 rounded-2xl shadow-md hover:shadow-xl transition-shadow border border-gray-100">
-              <div className="w-16 h-16 bg-blue-100 rounded-xl flex items-center justify-center mb-6">
-                <FileText className="w-8 h-8 text-blue-600" />
-              </div>
-              <div className="text-blue-600 font-bold mb-3 text-sm uppercase tracking-wide">Step 1</div>
-              <h3 className="font-bold text-2xl mb-4 text-gray-900">Paste Your Resume</h3>
-              <p className="text-gray-600 leading-relaxed">
-                Copy and paste your current resume. Our AI parses it and extracts all your experience, skills, and achievements.
-              </p>
-            </div>
+          <ProductMockups />
+        </div>
+      </section>
 
-            <div className="bg-white p-10 rounded-2xl shadow-md hover:shadow-xl transition-shadow border border-gray-100">
-              <div className="w-16 h-16 bg-blue-100 rounded-xl flex items-center justify-center mb-6">
-                <Target className="w-8 h-8 text-blue-600" />
-              </div>
-              <div className="text-blue-600 font-bold mb-3 text-sm uppercase tracking-wide">Step 2</div>
-              <h3 className="font-bold text-2xl mb-4 text-gray-900">Add Job URL</h3>
-              <p className="text-gray-600 leading-relaxed">
-                Paste the job posting URL. We automatically extract requirements, keywords, and what the employer is looking for.
-              </p>
-            </div>
-
-            <div className="bg-white p-10 rounded-2xl shadow-md hover:shadow-xl transition-shadow border border-gray-100">
-              <div className="w-16 h-16 bg-blue-100 rounded-xl flex items-center justify-center mb-6">
-                <Sparkles className="w-8 h-8 text-blue-600" />
-              </div>
-              <div className="text-blue-600 font-bold mb-3 text-sm uppercase tracking-wide">Step 3</div>
-              <h3 className="font-bold text-2xl mb-4 text-gray-900">Download & Apply</h3>
-              <p className="text-gray-600 leading-relaxed">
-                Get your optimized resume in seconds. Download the PDF and apply with confidence, knowing it's perfectly tailored.
-              </p>
-            </div>
+      {/* Problem Section */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white">
+        <div className="max-w-4xl mx-auto">
+          <div className="p-8 border-2 border-orange-200 rounded-xl bg-gradient-to-br from-orange-50 to-red-50 text-center">
+            <div className="text-5xl mb-4">⚠️</div>
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
+              75% of resumes never reach a human recruiter
+            </h2>
+            <p className="text-lg text-gray-700 leading-relaxed">
+              Generic resumes get filtered out by ATS systems. Manually customizing takes 2-3 hours per job. We fix both problems in 3 minutes.
+            </p>
           </div>
         </div>
       </section>
 
       {/* Features */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              Powered by Advanced AI
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Why MakeFastResume Works
             </h2>
-            <p className="text-xl text-gray-600">
-              Claude Sonnet 4 ensures your resume stands out for all the right reasons
+            <p className="text-lg text-gray-600">
+              Powered by Advanced AI
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="flex gap-5 p-7 border-2 border-gray-200 rounded-xl hover:border-blue-400 hover:shadow-lg transition-all bg-white">
-              <CheckCircle className="w-7 h-7 text-green-600 flex-shrink-0 mt-1" />
-              <div>
-                <h3 className="font-bold text-xl mb-3 text-gray-900">ATS-Optimized Keywords</h3>
-                <p className="text-gray-600 leading-relaxed">
-                  Automatically identifies and incorporates relevant keywords from job descriptions to pass Applicant Tracking Systems.
-                </p>
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="text-center p-8 bg-white rounded-2xl shadow-lg border border-gray-200 hover:shadow-xl transition-shadow">
+              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <CheckCircle className="w-8 h-8 text-green-600" />
               </div>
+              <h3 className="font-bold text-xl mb-3 text-gray-900">ATS-Optimized</h3>
+              <p className="text-gray-600 leading-relaxed">
+                Automatically identifies and incorporates job-specific keywords to pass Applicant Tracking Systems.
+              </p>
             </div>
 
-            <div className="flex gap-5 p-7 border-2 border-gray-200 rounded-xl hover:border-blue-400 hover:shadow-lg transition-all bg-white">
-              <CheckCircle className="w-7 h-7 text-green-600 flex-shrink-0 mt-1" />
-              <div>
-                <h3 className="font-bold text-xl mb-3 text-gray-900">Smart Experience Reframing</h3>
-                <p className="text-gray-600 leading-relaxed">
-                  Rewrites your bullet points to emphasize the most relevant skills and achievements for each specific role.
-                </p>
+            <div className="text-center p-8 bg-white rounded-2xl shadow-lg border border-gray-200 hover:shadow-xl transition-shadow">
+              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Clock className="w-8 h-8 text-blue-600" />
               </div>
+              <h3 className="font-bold text-xl mb-3 text-gray-900">3 Minutes</h3>
+              <p className="text-gray-600 leading-relaxed">
+                What used to take 2-3 hours of manual work now happens in under 5 minutes with better results.
+              </p>
             </div>
 
-            <div className="flex gap-5 p-7 border-2 border-gray-200 rounded-xl hover:border-blue-400 hover:shadow-lg transition-all bg-white">
-              <CheckCircle className="w-7 h-7 text-green-600 flex-shrink-0 mt-1" />
-              <div>
-                <h3 className="font-bold text-xl mb-3 text-gray-900">Maintains Authenticity</h3>
-                <p className="text-gray-600 leading-relaxed">
-                  Never fabricates experience. Only highlights and reframes what you've actually accomplished in your career.
-                </p>
+            <div className="text-center p-8 bg-white rounded-2xl shadow-lg border border-gray-200 hover:shadow-xl transition-shadow">
+              <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Zap className="w-8 h-8 text-yellow-600" />
               </div>
-            </div>
-
-            <div className="flex gap-5 p-7 border-2 border-gray-200 rounded-xl hover:border-blue-400 hover:shadow-lg transition-all bg-white">
-              <CheckCircle className="w-7 h-7 text-green-600 flex-shrink-0 mt-1" />
-              <div>
-                <h3 className="font-bold text-xl mb-3 text-gray-900">Professional Formatting</h3>
-                <p className="text-gray-600 leading-relaxed">
-                  Generates clean, ATS-friendly PDFs that look great both in automated systems and to human recruiters.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex gap-5 p-7 border-2 border-gray-200 rounded-xl hover:border-blue-400 hover:shadow-lg transition-all bg-white">
-              <Clock className="w-7 h-7 text-blue-600 flex-shrink-0 mt-1" />
-              <div>
-                <h3 className="font-bold text-xl mb-3 text-gray-900">Minutes, Not Hours</h3>
-                <p className="text-gray-600 leading-relaxed">
-                  What used to take 2-3 hours of manual work now happens in under 5 minutes with better results.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex gap-5 p-7 border-2 border-gray-200 rounded-xl hover:border-blue-400 hover:shadow-lg transition-all bg-white">
-              <Zap className="w-7 h-7 text-yellow-600 flex-shrink-0 mt-1" />
-              <div>
-                <h3 className="font-bold text-xl mb-3 text-gray-900">Unlimited Tailoring</h3>
-                <p className="text-gray-600 leading-relaxed">
-                  Create as many tailored versions as you need. Apply to 10, 20, or 100 jobs with optimized resumes for each.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Social Proof */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 to-indigo-100">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-12">
-            Join Thousands of Successful Job Seekers
-          </h2>
-
-          <div className="grid md:grid-cols-3 gap-8 mb-12">
-            <div className="bg-white p-6 rounded-lg shadow-sm">
-              <div className="text-4xl font-bold text-blue-600 mb-2">3x</div>
-              <p className="text-gray-600">More interview callbacks</p>
-            </div>
-            <div className="bg-white p-6 rounded-lg shadow-sm">
-              <div className="text-4xl font-bold text-blue-600 mb-2">75%</div>
-              <p className="text-gray-600">Pass ATS systems</p>
-            </div>
-            <div className="bg-white p-6 rounded-lg shadow-sm">
-              <div className="text-4xl font-bold text-blue-600 mb-2">5min</div>
-              <p className="text-gray-600">Average tailoring time</p>
+              <h3 className="font-bold text-xl mb-3 text-gray-900">Unlimited Use</h3>
+              <p className="text-gray-600 leading-relaxed">
+                Create as many tailored versions as you need. Apply to 10, 20, or 100 jobs with optimized resumes for each.
+              </p>
             </div>
           </div>
         </div>
